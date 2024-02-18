@@ -18,6 +18,18 @@ class Dish(
         quantity = value
     }
 
+    override fun getPrice(): Int {
+        return price
+    }
+
+    override fun getPreparationTime(): Int {
+        return preparationTime
+    }
+
+    override fun getQuantity(): Int {
+        return quantity
+    }
+
     override fun toString(): String {
         return "Блюдо: $name, цена: $price, время приготовления: $preparationTime"
     }

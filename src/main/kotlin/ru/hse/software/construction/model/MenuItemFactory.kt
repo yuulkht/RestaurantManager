@@ -5,7 +5,7 @@ interface MenuItemFactory {
     fun createDrink(name: String, price: Int, preparationTime: Int, quantity: Int) : MenuItem
 }
 
-class ConcreteMenuItemFactory : MenuItemFactory {
+class WinterMenuItemFactory : MenuItemFactory {
     override fun createDish(name: String, price: Int, preparationTime: Int, quantity: Int): MenuItem {
         return Dish(name, price, preparationTime, quantity)
     }
