@@ -7,8 +7,17 @@ class Menu (
         menuItems.add(item)
     }
 
-    fun deleteMenuItem(item : MenuItem) {
-        menuItems.remove(item)
+    fun deleteMenuItem(itemName: String) {
+        val itemToRemove = menuItems.find { it.getName() == itemName }
+        menuItems.remove(itemToRemove)
+    }
+
+    fun isInMenu(itemName: String): Boolean {
+        return menuItems.any { it.getName() == itemName }
+    }
+
+    fun getMenuItemByName(itemName: String) : MenuItem? {
+        return menuItems.find { it.getName() == itemName }
     }
 
     override fun toString(): String {

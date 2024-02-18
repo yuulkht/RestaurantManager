@@ -1,16 +1,20 @@
 package ru.hse.software.construction.model
 
+enum class MenuItemType {
+    DISH,
+    DRINK
+}
+
 interface MenuItemFactory {
-    fun createDish(name: String, price: Int, preparationTime: Int, quantity: Int) : MenuItem
-    fun createDrink(name: String, price: Int, preparationTime: Int, quantity: Int) : MenuItem
+    fun createMenuItem(type: MenuItemType, name: String, price: Int, preparationTime: Int, quantity: Int) : MenuItem
+
 }
 
 class WinterMenuItemFactory : MenuItemFactory {
-    override fun createDish(name: String, price: Int, preparationTime: Int, quantity: Int): MenuItem {
-        return Dish(name, price, preparationTime, quantity)
-    }
-
-    override fun createDrink(name: String, price: Int, preparationTime: Int, quantity: Int): MenuItem {
-        return Drink(name, price, preparationTime, quantity)
+    override fun createMenuItem(type: MenuItemType, name: String, price: Int, preparationTime: Int, quantity: Int): MenuItem {
+        return when (type) {
+            MenuItemType.DISH -> Dish(name, price, preparationTime, quantity)
+            MenuItemType.DRINK -> Drink(name, price, preparationTime, quantity)
+        }
     }
 }

@@ -6,18 +6,14 @@ class Drink (
     private var preparationTime: Int,
     private var quantity: Int
 ) : MenuItem {
-    override fun setPrice(value: Int) {
-        price = value
-    }
-
-    override fun setPreparationTime(value: Int) {
-        preparationTime = value
-    }
 
     override fun setQuantity(value: Int) {
         quantity = value
     }
 
+    override fun getName(): String {
+        return name
+    }
     override fun getPrice(): Int {
         return price
     }

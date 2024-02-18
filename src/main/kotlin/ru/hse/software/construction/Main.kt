@@ -10,19 +10,18 @@ class Program {
         private val isFilledInfo = info.isFilledInfo()
 
         private val outputHandler: ConsoleOutputHandler = ConsoleOutputHandler()
-        private var exit: Boolean = false
         private var commandHandlers = LoginHandler(CommandValidationHandler(ExecutionCommandHandler()))
 
         @JvmStatic
         fun main(args: Array<String>) {
             if (!isFilledInfo) {
-                outputHandler.displayError("проблема с доступом к базе данных кинотеатра")
-                exit = true
+                outputHandler.displayError("Проблема с доступом к базе данных ресторана")
+                info.exit = true
             }
-            if (!exit) {
+            if (!info.exit) {
                 outputHandler.displayMessage("Добро пожаловать в приложение Ресторан!")
             }
-            while (!exit) {
+            while (!info.exit) {
                 if (!info.authSession.isLoggedIn()) {
                     outputHandler.displayAuthCommands()
                 }

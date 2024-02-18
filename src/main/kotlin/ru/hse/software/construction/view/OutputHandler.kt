@@ -1,5 +1,7 @@
 package ru.hse.software.construction.view
 
+import ru.hse.software.construction.ProgramInfo
+
 
 interface OutputHandler {
     fun displayAdminCommands()
@@ -7,6 +9,7 @@ interface OutputHandler {
     fun displayAuthCommands()
     fun displayMessage(message: String)
     fun displayError(message: String)
+    fun displayMenu(info: ProgramInfo)
 }
 
 // Реализация интерфейса для вывода в консоль
@@ -53,5 +56,10 @@ class ConsoleOutputHandler : OutputHandler {
 
     override fun displayError(message: String) {
         println("Ошибка: $message")
+    }
+
+    override fun displayMenu(info: ProgramInfo) {
+        println("Текущее меню:")
+        println(info.restaurant.getMenu())
     }
 }
