@@ -13,27 +13,26 @@ class UserStorage(
         return users
     }
 
-    fun addUser(login: String, password: String, isAdmin: Boolean = false) {
-        val hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt())
-        if (isAdmin) {
-            users.add(Administrator(login, hashedPassword))
-        } else {
-            users.add(Visitor(login, hashedPassword))
-        }
+    fun addUser(user: User) {
+        users.add(user)
         // FileUserStorageRepository().saveUserStorage(this)
     }
 
-    private fun getUserPassword(login: String): String? {
-        val user = users.find { it.getLogin() == login }
-        return user?.getHashedPassword()
+    private fun getUserByLogin(login: String): User? {
+        return users.find { it.getLogin() == login }
     }
 
     fun userExists(login: String): Boolean {
         return users.any { it.getLogin() == login }
     }
 
-    fun validatePassword(login: String, password: String): Boolean {
-        val hashedPassword = getUserPassword(login)
-        return hashedPassword != null && BCrypt.checkpw(password, hashedPassword)
+    fun validateVisitorPassword(login: String, password: String): Boolean {
+        val user = getUserByLogin(login)
+        return user != null && user is Visitor && BCrypt.checkpw(password, user.getHashedPassword())
+    }
+
+    fun validateAdminPassword(login: String, password: String): Boolean {
+        val user = getUserByLogin(login)
+        return user != null && user is Administrator && BCrypt.checkpw(password, user.getHashedPassword())
     }
 }
