@@ -9,7 +9,7 @@ import ru.hse.software.construction.reader.ConsoleUserReader
 import ru.hse.software.construction.view.ConsoleOutputHandler
 
 class LoginCommand(
-    private val userStorage: UserStorage,
+    val userStorage: UserStorage = UserStorage(),
     private val reader: ConsoleUserReader = ConsoleUserReader(),
     private val outputHandler: ConsoleOutputHandler = ConsoleOutputHandler()
 ) : Command {
@@ -26,15 +26,16 @@ class LoginCommand(
             outputHandler.displayMessage("Введите пароль:")
             val password = reader.readAuthData()
 
-            if (userStorage.validateAdminPassword(login, password)) {
-                val user = Administrator(login, password)
-                info.authSession.login(user)
-                outputHandler.displayMessage("Вход в систему выполнен успешно.")
+            val admin = userStorage.admins.find { it.getLogin() == login && userStorage.validateAdminPassword(login, password) }
+            val visitor = userStorage.visitors.find { it.getLogin() == login && userStorage.validateVisitorPassword(login, password) }
+
+            if (admin != null) {
+                info.authSession.login(admin)
+                outputHandler.displayMessage("Вход админа в систему выполнен успешно.")
             }
-            else if (userStorage.validateVisitorPassword(login, password)) {
-                val user = Visitor(login, password)
-                info.authSession.login(user)
-                outputHandler.displayMessage("Вход в систему выполнен успешно.")
+            else if (visitor != null) {
+                info.authSession.login(visitor)
+                outputHandler.displayMessage("Вход посетителя в систему выполнен успешно.")
             }
             else {
                 outputHandler.displayMessage("Неверный логин или пароль.")

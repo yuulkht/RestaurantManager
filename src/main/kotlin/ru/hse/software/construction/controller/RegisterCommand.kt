@@ -24,7 +24,6 @@ class RegisterCommand(
             outputHandler.displayMessage("Введите логин:")
             val login = reader.readAuthData()
 
-            // Проверяем, что логин не занят
             if (userStorage.userExists(login)) {
                 outputHandler.displayMessage("Пользователь с таким логином уже существует")
                 return
@@ -34,17 +33,17 @@ class RegisterCommand(
             val password = reader.readAuthData()
 
             outputHandler.displayMessage("Введите специальный код (для регистрации администратора):")
-            val specialCode = reader.readAuthData()
+            val adminCode = reader.readAuthData()
 
-            val user = if (specialCode == "1234") {
-                Administrator(login, BCrypt.hashpw(password, BCrypt.gensalt()))
+            if (adminCode == "1234") {
+                val admin = Administrator(login, BCrypt.hashpw(password, BCrypt.gensalt()))
+                userStorage.addAdmin(admin)
+                info.authSession.login(admin)
             } else {
-                Visitor(login, BCrypt.hashpw(password, BCrypt.gensalt()))
+                val visitor = Visitor(login, BCrypt.hashpw(password, BCrypt.gensalt()))
+                userStorage.addVisitor(visitor)
+                info.authSession.login(visitor)
             }
-
-            userStorage.addUser(user)
-
-            info.authSession.login(user)
 
             outputHandler.displayMessage("Регистрация выполнена успешно.")
         }

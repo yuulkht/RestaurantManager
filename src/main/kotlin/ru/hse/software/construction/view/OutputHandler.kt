@@ -1,6 +1,7 @@
 package ru.hse.software.construction.view
 
 import ru.hse.software.construction.ProgramInfo
+import ru.hse.software.construction.model.Order
 
 
 interface OutputHandler {
@@ -10,35 +11,32 @@ interface OutputHandler {
     fun displayMessage(message: String)
     fun displayError(message: String)
     fun displayMenu(info: ProgramInfo)
+    fun displayMenuAllBase(info: ProgramInfo)
+    fun displayOrder(order: Order)
+    fun displayOrderStatus(order: Order)
 }
 
 // Реализация интерфейса для вывода в консоль
 class ConsoleOutputHandler : OutputHandler {
     override fun displayAdminCommands() {
-        println("Список АДМИН команд: ")
+        println("${ConsoleStyle.BLUE}Список команд для администратора: ${ConsoleStyle.RESET}")
         println()
 
-        println("1 - Зафиксировать продажу билета")
-        println("2 - Вернуть билет")
-        println("3 - Выбрать сеанс и посмотреть свободные места")
-        println("4 - Редактировать информацию о фильмах в прокате")
-        println("5 - Редактировать информацию о сеансах")
-        println("6 - Отметить занятые места в зале")
-        println("logout - Выйти из системы")
+        println("addItem. Добавить новую позицию в меню ресторана")
+        println("deleteItem. Удалить позицию из меню")
+        println("changeQuantity. Изменить доступное количество у позиции в меню")
+        println("logout. Выйти из системы")
 
     }
 
     override fun displayVisitorCommands() {
-        println("Список ВИЗИТОР команд: ")
+        println("${ConsoleStyle.BLUE}Список команд для посетителя: ${ConsoleStyle.RESET}")
         println()
 
-        println("1 - Зафиксировать продажу билета")
-        println("2 - Вернуть билет")
-        println("3 - Выбрать сеанс и посмотреть свободные места")
-        println("4 - Редактировать информацию о фильмах в прокате")
-        println("5 - Редактировать информацию о сеансах")
-        println("6 - Отметить занятые места в зале")
-        println("logout - Выйти из системы")
+        println("createOrder. Создать новый заказ")
+        println("payFor. Заплатить за готовые заказы")
+        println("addMoney. Пополнить счет")
+        println("logout. Выйти из системы")
 
     }
 
@@ -55,11 +53,24 @@ class ConsoleOutputHandler : OutputHandler {
     }
 
     override fun displayError(message: String) {
-        println("Ошибка: $message")
+        println("${ConsoleStyle.RED}Ошибка: $message${ConsoleStyle.RESET}")
     }
 
     override fun displayMenu(info: ProgramInfo) {
-        println("Текущее меню:")
+        println("${ConsoleStyle.BLUE}Текущее меню:${ConsoleStyle.RESET}")
         println(info.restaurant.getMenu())
+    }
+
+    override fun displayMenuAllBase(info: ProgramInfo) {
+        println("${ConsoleStyle.BLUE}Все позиции ресторана:${ConsoleStyle.RESET}")
+        println(info.restaurant.getMenu().getAllBase())
+    }
+
+    override fun displayOrder(order: Order) {
+        println(order)
+    }
+
+    override fun displayOrderStatus(order: Order) {
+        println(order.showOrderStatus())
     }
 }

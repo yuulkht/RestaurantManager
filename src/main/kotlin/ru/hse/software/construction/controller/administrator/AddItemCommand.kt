@@ -1,8 +1,8 @@
-package ru.hse.software.construction.controller
+package ru.hse.software.construction.controller.administrator
 
 import ru.hse.software.construction.ProgramInfo
+import ru.hse.software.construction.controller.Command
 import ru.hse.software.construction.model.MenuItemFactory
-import ru.hse.software.construction.model.MenuItemType
 import ru.hse.software.construction.model.WinterMenuItemFactory
 import ru.hse.software.construction.reader.ConsoleUserReader
 import ru.hse.software.construction.view.ConsoleOutputHandler
@@ -14,20 +14,6 @@ class AddItemCommand(
 ) : Command {
 
     override fun process(programInfo: ProgramInfo) {
-        outputHandler.displayMenu(programInfo)
-        outputHandler.displayMessage("Выберите, что именно вы хотите добавить в меню:")
-        outputHandler.displayMessage("1. Блюдо")
-        outputHandler.displayMessage("2. Напиток")
-        val choice = reader.readInt()
-
-        when (choice) {
-            1 -> createMenuItem(programInfo, MenuItemType.DISH)
-            2 -> createMenuItem(programInfo, MenuItemType.DRINK)
-            else -> outputHandler.displayMessage("Некорректный выбор.")
-        }
-    }
-
-    private fun createMenuItem(programInfo: ProgramInfo, type: MenuItemType) {
         outputHandler.displayMessage("Введите название:")
         val name = reader.readString()
         outputHandler.displayMessage("Введите цену:")
@@ -48,8 +34,8 @@ class AddItemCommand(
             preparationTime > 0 &&
             quantity > 0
         ) {
-            val menuItem = menuItemFactory.createMenuItem(type, name, price, preparationTime, quantity)
-            currentMenu.addMenuItem(menuItem)
+            val menuItem = menuItemFactory.createDish(name, price, preparationTime, quantity)
+            currentMenu.addDish(menuItem)
             outputHandler.displayMessage("Позиция успешно добавлена в меню")
         }
         else {

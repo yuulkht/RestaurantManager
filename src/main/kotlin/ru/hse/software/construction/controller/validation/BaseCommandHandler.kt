@@ -1,4 +1,4 @@
-package ru.hse.software.construction.controller
+package ru.hse.software.construction.controller.validation
 
 import ru.hse.software.construction.ProgramInfo
 

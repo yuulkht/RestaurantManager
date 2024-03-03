@@ -4,35 +4,48 @@ import org.mindrot.jbcrypt.BCrypt
 import ru.hse.software.construction.model.Administrator
 import ru.hse.software.construction.model.User
 import ru.hse.software.construction.model.Visitor
+import ru.hse.software.construction.repository.RestaurantAppRepository
 
 class UserStorage(
-    private val users: MutableList<User> = mutableListOf()
+    val admins: MutableList<Administrator> = mutableListOf(),
+    val visitors: MutableList<Visitor> = mutableListOf(),
 ) {
     // for serializer
-    fun getUsers(): MutableList<User> {
-        return users
+//    fun getAdmins(): MutableList<Administrator> {
+//        return admins
+//    }
+
+//    fun getVisitors(): MutableList<Visitor> {
+//        return visitors
+//    }
+
+    fun addAdmin(admin: Administrator) {
+        admins.add(admin)
     }
 
-    fun addUser(user: User) {
-        users.add(user)
-        // FileUserStorageRepository().saveUserStorage(this)
+    fun addVisitor(visitor: Visitor) {
+        visitors.add(visitor)
     }
 
-    private fun getUserByLogin(login: String): User? {
-        return users.find { it.getLogin() == login }
+    private fun getAdminByLogin(login: String): Administrator? {
+        return admins.find { it.getLogin() == login }
+    }
+
+    private fun getVisitorByLogin(login: String): Visitor? {
+        return visitors.find { it.getLogin() == login }
     }
 
     fun userExists(login: String): Boolean {
-        return users.any { it.getLogin() == login }
+        return getAdminByLogin(login) != null || getVisitorByLogin(login) != null
     }
 
     fun validateVisitorPassword(login: String, password: String): Boolean {
-        val user = getUserByLogin(login)
-        return user != null && user is Visitor && BCrypt.checkpw(password, user.getHashedPassword())
+        val user = getVisitorByLogin(login)
+        return user != null && BCrypt.checkpw(password, user.getHashedPassword())
     }
 
     fun validateAdminPassword(login: String, password: String): Boolean {
-        val user = getUserByLogin(login)
-        return user != null && user is Administrator && BCrypt.checkpw(password, user.getHashedPassword())
+        val user = getAdminByLogin(login)
+        return user != null && BCrypt.checkpw(password, user.getHashedPassword())
     }
 }

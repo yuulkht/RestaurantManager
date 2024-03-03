@@ -1,33 +1,46 @@
 package ru.hse.software.construction.model
 
-class Menu (
-    private var menuItems : MutableList<MenuItem> = mutableListOf()
+import com.fasterxml.jackson.annotation.JsonFormat
+import com.fasterxml.jackson.annotation.JsonIgnore
+import com.fasterxml.jackson.databind.annotation.JsonSerialize
+
+data class Menu (
+    @JsonSerialize
+    var dishes : MutableList<Dish> = mutableListOf()
 ) {
-    fun addMenuItem(item : MenuItem) {
-        menuItems.add(item)
+//    fun getDishes() : MutableList<Dish> {
+//        return dishes
+//    }
+    fun addDish(dish : Dish) {
+        dishes.add(dish)
     }
 
-    fun deleteMenuItem(itemName: String) {
-        val itemToRemove = menuItems.find { it.getName() == itemName }
-        menuItems.remove(itemToRemove)
+    fun deleteDish(dishName: String) {
+        val itemToRemove = dishes.find { it.name == dishName }
+        dishes.remove(itemToRemove)
     }
 
-    fun isInMenu(itemName: String): Boolean {
-        return menuItems.any { it.getName() == itemName }
+    fun isInMenu(dishName: String): Boolean {
+        return dishes.any { it.name == dishName }
     }
 
-    fun getMenuItemByName(itemName: String) : MenuItem? {
-        return menuItems.find { it.getName() == itemName }
+    fun getDishByName(dishName: String) : Dish? {
+        return dishes.find { it.name == dishName }
+    }
+
+    @JsonIgnore
+    fun getAllBase() : String {
+        val dishes = dishes.filterIsInstance<Dish>()
+
+        val dishesString = dishes.joinToString(separator = "\n") { it.toString() }
+
+        return "\n$dishesString\n"
     }
 
     override fun toString(): String {
-        val dishes = menuItems.filterIsInstance<Dish>()
-        val drinks = menuItems.filterIsInstance<Drink>()
-
-        val dishesString = dishes.joinToString(separator = "\n") { it.toString() }
-        val drinksString = drinks.joinToString(separator = "\n") { it.toString() }
-
-        return "Блюда:\n$dishesString\n\nНапитки:\n$drinksString"
+        val dishesWithQuantity = dishes.filter { it.quantity > 0 }
+        val dishesString = dishesWithQuantity.joinToString(separator = "\n") { it.toString() }
+        return "\n$dishesString\n"
     }
 
 }

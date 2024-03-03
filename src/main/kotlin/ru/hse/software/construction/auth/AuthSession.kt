@@ -23,4 +23,8 @@ class AuthSession(
     fun isAdmin(): Boolean {
         return currentUser is Administrator
     }
+
+    fun getUser() : User? {
+        return currentUser
+    }
 }

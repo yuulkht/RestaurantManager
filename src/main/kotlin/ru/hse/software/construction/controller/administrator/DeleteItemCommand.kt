@@ -1,7 +1,7 @@
-package ru.hse.software.construction.controller
+package ru.hse.software.construction.controller.administrator
 
 import ru.hse.software.construction.ProgramInfo
-import ru.hse.software.construction.model.MenuItemType
+import ru.hse.software.construction.controller.Command
 import ru.hse.software.construction.reader.ConsoleUserReader
 import ru.hse.software.construction.view.ConsoleOutputHandler
 
@@ -18,7 +18,7 @@ class DeleteItemCommand (
         val currentMenu = programInfo.restaurant.getMenu()
 
         if (chosenItem != null && currentMenu.isInMenu(chosenItem)) {
-            currentMenu.deleteMenuItem(chosenItem)
+            currentMenu.deleteDish(chosenItem)
             outputHandler.displayMessage("Позиция успешно удалена из меню")
         } else {
             outputHandler.displayError("Позиция не найдена в меню")
