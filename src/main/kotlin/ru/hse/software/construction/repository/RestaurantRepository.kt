@@ -12,8 +12,8 @@ import java.io.IOException
 
 class RestaurantAppRepository(
     private val objectMapper: ObjectMapper = ObjectMapper().registerKotlinModule().registerModule(JavaTimeModule()),
-    var pathToRestaurantFile: String = "restaurant.json",
-    var pathToUserStorageFile: String = "userStorage.json"
+    private var pathToRestaurantFile: String = "restaurant.json",
+    private var pathToUserStorageFile: String = "userStorage.json"
 ) {
 
     fun saveRestaurant(restaurant: Restaurant) {

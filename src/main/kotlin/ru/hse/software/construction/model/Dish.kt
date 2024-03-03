@@ -12,30 +12,12 @@ data class Dish(
     var preparationTime: Int = 1,
     @JsonSerialize
     var quantity: Int = 1
-){ //: MenuItem {
-
-//    override fun setQuantity(value: Int) {
-//        quantity = value
-//    }
-//
-//    override fun getName(): String {
-//        return name
-//    }
-//
-//    override fun getPrice(): Int {
-//        return price
-//    }
-//
-//    override fun getPreparationTime(): Int {
-//        return preparationTime
-//    }
-//
-//    override fun getQuantity(): Int {
-//        return quantity
-//    }
+){
 
     override fun toString(): String {
-        return "Позиция: $name, цена: $price, время приготовления: $preparationTime, количество: $quantity"
+
+        return "Позиция: %-15s цена: %-5d время приготовления: %-5d количество: %-5d".format(
+            name, price, preparationTime, quantity)
     }
 
 }

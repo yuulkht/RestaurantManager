@@ -18,12 +18,11 @@ class Program {
 
         @JvmStatic
         fun main(args: Array<String>) {
-            /*if (!isFilledInfo) {
-                // TODO подключить бд
+            if (!isFilledInfo) {
                 outputHandler.displayError("Проблема с доступом к базе данных ресторана")
                 info.restaurant.getOrderManager().stopAllChefs()
                 exit = true
-            }*/
+            }
             if (!exit) {
                 outputHandler.displayMessage("Добро пожаловать в приложение Ресторан!")
             }

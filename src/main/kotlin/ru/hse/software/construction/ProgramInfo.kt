@@ -1,12 +1,14 @@
 package ru.hse.software.construction
 
-import AddMoneyCommand
+import ru.hse.software.construction.controller.visitor.AddMoneyCommand
 import ru.hse.software.construction.auth.AuthSession
 import ru.hse.software.construction.auth.UserStorage
 import ru.hse.software.construction.controller.*
 import ru.hse.software.construction.controller.administrator.AddItemCommand
 import ru.hse.software.construction.controller.administrator.ChangeQuantityCommand
 import ru.hse.software.construction.controller.administrator.DeleteItemCommand
+import ru.hse.software.construction.controller.visitor.CreateOrderCommand
+import ru.hse.software.construction.controller.visitor.PayForOrderCommand
 import ru.hse.software.construction.model.Restaurant
 import ru.hse.software.construction.repository.RestaurantAppRepository
 

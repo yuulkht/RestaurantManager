@@ -11,7 +11,7 @@ class DeleteItemCommand (
 ) : Command {
 
     override fun process(programInfo: ProgramInfo) {
-        outputHandler.displayMenu(programInfo)
+        outputHandler.displayMenuAllBase(programInfo)
         outputHandler.displayMessage("Выберите, что именно вы хотите удалить из меню, введя название позиции:")
         val chosenItem = reader.readString()
 

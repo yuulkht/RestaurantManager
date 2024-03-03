@@ -14,7 +14,8 @@ class AddItemCommand(
 ) : Command {
 
     override fun process(programInfo: ProgramInfo) {
-        outputHandler.displayMessage("Введите название:")
+        outputHandler.displayMenuAllBase(programInfo)
+        outputHandler.displayMessage("Введите название новой позиции:")
         val name = reader.readString()
         outputHandler.displayMessage("Введите цену:")
         val price = reader.readInt()

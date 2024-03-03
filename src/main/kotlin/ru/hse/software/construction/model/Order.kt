@@ -65,21 +65,22 @@ class Order (
 
     override fun toString(): String {
         val builder = StringBuilder()
-        builder.appendLine("--------------------------------------------------")
-        builder.appendLine("|               Заказ для ${visitor.getLogin()}              |")
-        builder.appendLine("--------------------------------------------------")
-        builder.appendLine("| Название        | Цена    | Количество | Подитог |")
-        builder.appendLine("--------------------------------------------------")
+        builder.appendLine("${ConsoleStyle.CYAN}--------------------------------------------------${ConsoleStyle.RESET}")
+        builder.appendLine("|${ConsoleStyle.YELLOW}               Заказ для ${visitor.getLogin()}                  ${ConsoleStyle.RESET}|")
+        builder.appendLine("${ConsoleStyle.CYAN}--------------------------------------------------${ConsoleStyle.RESET}")
+        builder.appendLine("| Название       | Цена    | Количество | Подитог  |")
+        builder.appendLine("${ConsoleStyle.CYAN}--------------------------------------------------${ConsoleStyle.RESET}")
         dishes.values.forEach { dish ->
             val name = dish.name.padEnd(15)
             val price = dish.price.toString().padEnd(8)
             val quantity = dish.quantity.toString().padEnd(11)
             val subtotal = (dish.price * dish.quantity).toString().padEnd(9)
-            builder.appendLine("| $name| $price| $quantity| $subtotal|")
+            builder.appendLine("| $name| $price| $quantity| ${ConsoleStyle.BLUE}$subtotal${ConsoleStyle.RESET}|")
         }
-        builder.appendLine("--------------------------------------------------")
-        builder.appendLine("|                                      Итого: ${getTotalCost()}|")
-        builder.appendLine("--------------------------------------------------")
+        builder.appendLine("${ConsoleStyle.CYAN}--------------------------------------------------${ConsoleStyle.RESET}")
+        builder.appendLine("|                                      Итого: ${ConsoleStyle.BOLD}${ConsoleStyle.GREEN}${getTotalCost()}   ${ConsoleStyle.RESET}|")
+        builder.appendLine("${ConsoleStyle.CYAN}--------------------------------------------------${ConsoleStyle.RESET}")
         return builder.toString()
     }
+
 }

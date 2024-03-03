@@ -1,6 +1,7 @@
-package ru.hse.software.construction.controller
+package ru.hse.software.construction.controller.visitor
 
 import ru.hse.software.construction.ProgramInfo
+import ru.hse.software.construction.controller.Command
 import ru.hse.software.construction.model.*
 import ru.hse.software.construction.view.ConsoleOutputHandler
 import ru.hse.software.construction.reader.ConsoleUserReader
@@ -23,10 +24,12 @@ class PayForOrderCommand(
                     outputHandler.displayMessage("${index + 1}. $order")
                 }
                 val totalCost = visitorOrders.sumOf { it.getTotalCost() }
-                outputHandler.displayMessage("Общая стоимость ваших заказов: $totalCost")
                 outputHandler.displayMessage("Баланс вашего счета: ${visitor.getBalance()}")
+                outputHandler.displayMessage("Общая стоимость ваших заказов: $totalCost")
                 if (payForOrders(visitorOrders, visitor, programInfo)) {
+                    outputHandler.displayMessage("Обновленный баланс вашего счета: ${visitor.getBalance()}")
                     removeOrdersFromRestaurant(visitorOrders, programInfo)
+                    programInfo.restaurant.setAmountOfRevenue(programInfo.restaurant.getAmountOfRevenue() + totalCost)
                     outputHandler.displayMessage("${ConsoleStyle.GREEN}Заказ(ы) успешно оплачены${ConsoleStyle.RESET}")
                 }
                 else {

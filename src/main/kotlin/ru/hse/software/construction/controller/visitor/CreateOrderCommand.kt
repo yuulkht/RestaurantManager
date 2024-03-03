@@ -1,11 +1,11 @@
-package ru.hse.software.construction.controller
+package ru.hse.software.construction.controller.visitor
 
 import ru.hse.software.construction.ProgramInfo
+import ru.hse.software.construction.controller.Command
 import ru.hse.software.construction.model.*
 import ru.hse.software.construction.view.ConsoleOutputHandler
 import ru.hse.software.construction.reader.ConsoleUserReader
 
-// TODO логика в finish мне не нравится, продумать так же уменьшение количества в меню
 class CreateOrderCommand(
     private val reader: ConsoleUserReader = ConsoleUserReader(),
     private val outputHandler: ConsoleOutputHandler = ConsoleOutputHandler(),
@@ -16,11 +16,7 @@ class CreateOrderCommand(
         val currentMenu = programInfo.restaurant.getMenu()
 
         while (true) {
-            outputHandler.displayMessage("Сформируйте ваш заказ:")
-            outputHandler.displayMessage("1. Добавить новую позицию")
-            outputHandler.displayMessage("2. Завершить выбор")
-            outputHandler.displayMessage("3. Просмотреть заказ")
-            outputHandler.displayMessage("4. Отменить заказ")
+            outputHandler.displayOrderCommands()
 
             when (reader.readInt()) {
                 1 -> addDishToOrder(order, programInfo, currentMenu)
@@ -28,7 +24,10 @@ class CreateOrderCommand(
                     break
                 }
                 3 -> outputHandler.displayOrder(order)
-                4 -> break //TODO вернуть позиции в меню
+                4 -> {
+                    cancelOrder(order, programInfo)
+                    break
+                }
                 else -> outputHandler.displayMessage("Некорректный выбор.")
             }
         }
@@ -66,11 +65,27 @@ class CreateOrderCommand(
                 programInfo.restaurant.getOrderManager().processOrder(order)
                 true
             } else {
-                // TODO лалалала вернуть позиции в меню
-                outputHandler.displayMessage("Заказ отменен")
+                cancelOrder(order, programInfo)
                 true
             }
         }
+    }
+
+    private fun cancelOrder(order: Order, programInfo: ProgramInfo) {
+        val restaurant = programInfo.restaurant
+        val menu = restaurant.getMenu()
+
+        order.getDishes().forEach { dish ->
+            val menuItem = menu.getDishByName(dish.name)
+            if (menuItem != null) {
+                menuItem.quantity += dish.quantity
+            } else {
+                menu.addDish(dish)
+            }
+        }
+
+        restaurant.getOrders().remove(order)
+        outputHandler.displayMessage("Ваш заказ отменен")
     }
 
 }

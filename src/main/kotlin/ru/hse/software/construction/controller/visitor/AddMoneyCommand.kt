@@ -1,3 +1,5 @@
+package ru.hse.software.construction.controller.visitor
+
 import ru.hse.software.construction.ProgramInfo
 import ru.hse.software.construction.controller.Command
 import ru.hse.software.construction.model.Visitor

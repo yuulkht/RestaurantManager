@@ -14,38 +14,43 @@ interface OutputHandler {
     fun displayMenuAllBase(info: ProgramInfo)
     fun displayOrder(order: Order)
     fun displayOrderStatus(order: Order)
+
+    fun displayOrderCommands()
 }
 
-// Реализация интерфейса для вывода в консоль
 class ConsoleOutputHandler : OutputHandler {
     override fun displayAdminCommands() {
         println("${ConsoleStyle.BLUE}Список команд для администратора: ${ConsoleStyle.RESET}")
         println()
 
-        println("addItem. Добавить новую позицию в меню ресторана")
-        println("deleteItem. Удалить позицию из меню")
-        println("changeQuantity. Изменить доступное количество у позиции в меню")
-        println("logout. Выйти из системы")
+        val maxWidth = 15 // Максимальная ширина ключа
 
+        println("%-${maxWidth}s %s".format("addItem.", "Добавить новую позицию в меню ресторана"))
+        println("%-${maxWidth}s %s".format("deleteItem.", "Удалить позицию из меню"))
+        println("%-${maxWidth}s %s".format("changeQuantity.", "Изменить доступное количество у позиции в меню"))
+        println("%-${maxWidth}s %s".format("logout.", "Выйти из системы"))
     }
 
     override fun displayVisitorCommands() {
         println("${ConsoleStyle.BLUE}Список команд для посетителя: ${ConsoleStyle.RESET}")
         println()
 
-        println("createOrder. Создать новый заказ")
-        println("payFor. Заплатить за готовые заказы")
-        println("addMoney. Пополнить счет")
-        println("logout. Выйти из системы")
+        val maxWidth = 13 // Максимальная ширина ключа
 
+        println("%-${maxWidth}s %s".format("createOrder.", "Создать новый заказ"))
+        println("%-${maxWidth}s %s".format("payFor.", "Заплатить за готовые заказы"))
+        println("%-${maxWidth}s %s".format("addMoney.", "Пополнить счет"))
+        println("%-${maxWidth}s %s".format("logout.", "Выйти из системы"))
     }
 
     override fun displayAuthCommands() {
+        val maxWidth = 10 // Максимальная ширина ключа
         println()
         println("Для использования приложения необходим вход в систему!")
         println()
-        println("register - Зарегистрироваться")
-        println("login - Войти")
+
+        println("%-${maxWidth}s %s".format("register.", "Зарегистрироваться"))
+        println("%-${maxWidth}s %s".format("login.", "Войти"))
     }
 
     override fun displayMessage(message: String) {
@@ -64,6 +69,7 @@ class ConsoleOutputHandler : OutputHandler {
     override fun displayMenuAllBase(info: ProgramInfo) {
         println("${ConsoleStyle.BLUE}Все позиции ресторана:${ConsoleStyle.RESET}")
         println(info.restaurant.getMenu().getAllBase())
+        println("Выручка ресторана: ${info.restaurant.getAmountOfRevenue()}")
     }
 
     override fun displayOrder(order: Order) {
@@ -72,5 +78,13 @@ class ConsoleOutputHandler : OutputHandler {
 
     override fun displayOrderStatus(order: Order) {
         println(order.showOrderStatus())
+    }
+
+    override fun displayOrderCommands() {
+        println("Сформируйте ваш заказ:")
+        println("1. Добавить новую позицию")
+        println("2. Завершить выбор")
+        println("3. Просмотреть заказ")
+        println("4. Отменить заказ")
     }
 }
