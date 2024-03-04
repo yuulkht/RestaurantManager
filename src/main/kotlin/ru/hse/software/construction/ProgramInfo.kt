@@ -7,6 +7,7 @@ import ru.hse.software.construction.controller.*
 import ru.hse.software.construction.controller.administrator.AddItemCommand
 import ru.hse.software.construction.controller.administrator.ChangeQuantityCommand
 import ru.hse.software.construction.controller.administrator.DeleteItemCommand
+import ru.hse.software.construction.controller.administrator.SeeStatisticsCommand
 import ru.hse.software.construction.controller.visitor.CreateOrderCommand
 import ru.hse.software.construction.controller.visitor.PayForOrderCommand
 import ru.hse.software.construction.model.Restaurant
@@ -53,6 +54,7 @@ class ProgramInfo(
         commands["addItem"] = AddItemCommand()
         commands["deleteItem"] = DeleteItemCommand()
         commands["changeQuantity"] = ChangeQuantityCommand()
+        commands["seeStatistics"] = SeeStatisticsCommand()
         commands["createOrder"] = CreateOrderCommand()
         commands["payFor"] = PayForOrderCommand()
         commands["addMoney"] = AddMoneyCommand()

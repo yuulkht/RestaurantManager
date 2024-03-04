@@ -28,10 +28,10 @@ class PayForOrderCommand(
                 outputHandler.displayMessage("Общая стоимость ваших заказов: $totalCost")
                 if (payForOrders(visitorOrders, visitor, programInfo)) {
                     outputHandler.displayMessage("Обновленный баланс вашего счета: ${visitor.getBalance()}")
-                    removeOrdersFromRestaurant(visitorOrders, programInfo)
                     programInfo.restaurant.setAmountOfRevenue(programInfo.restaurant.getAmountOfRevenue() + totalCost)
                     outputHandler.displayMessage("${ConsoleStyle.GREEN}Заказ(ы) успешно оплачены${ConsoleStyle.RESET}")
-
+                    rateOrders(visitorOrders, programInfo)
+                    removeOrdersFromRestaurant(visitorOrders, programInfo)
                 }
                 else {
                     outputHandler.displayMessage("На счете недостаточно средств для оплаты")
@@ -57,5 +57,23 @@ class PayForOrderCommand(
             restaurant.getOrders().remove(order)
         }
     }
+
+    private fun rateOrders(orders: List<Order>, programInfo: ProgramInfo) {
+        outputHandler.displayMessage("${ConsoleStyle.BLUE} Оцените свои заказы! ${ConsoleStyle.RESET}")
+        orders.forEach { order ->
+            outputHandler.displayOrder(order)
+            outputHandler.displayMessage("Введите вашу оценку от 1 до 5:")
+            val rating = reader.readInt()
+            outputHandler.displayMessage("Введите ваш комментарий (необязательно):")
+            val description = reader.readString()
+            if (rating != null && rating in 1..5 && description != null) {
+                programInfo.restaurant.getStatisticsManager().addReview(rating, description, order)
+                outputHandler.displayMessage("Спасибо за вашу оценку!")
+            } else {
+                outputHandler.displayError("Некорректные данные")
+            }
+        }
+    }
+
 
 }

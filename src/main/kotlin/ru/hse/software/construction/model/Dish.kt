@@ -1,6 +1,5 @@
 package ru.hse.software.construction.model
 
-import com.fasterxml.jackson.annotation.JsonFormat
 import com.fasterxml.jackson.databind.annotation.JsonSerialize
 
 data class Dish(

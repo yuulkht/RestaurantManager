@@ -1,6 +1,5 @@
 package ru.hse.software.construction.model
 
-import com.fasterxml.jackson.annotation.JsonIgnore
 import java.util.concurrent.BlockingQueue
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -11,8 +10,6 @@ class OrderManager(
     private val chefs: MutableList<Chef> = mutableListOf(),
     private val orderQueue: BlockingQueue<Order> = LinkedBlockingQueue()
 ) {
-    // TODO возмжны какие-то проблемы опять с многопточкой
-
     init {
         repeat(3) {
             val chef = Chef(orderQueue)

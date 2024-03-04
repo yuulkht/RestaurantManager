@@ -16,11 +16,11 @@ class CommandValidationHandler(private val nextHandler: CommandHandler?) : BaseC
             return true
         }
 
-        else if (info.authSession.isAdmin() && (command == "addItem" || command == "deleteItem" || command == "changeQuantity")) {
+        else if (info.authSession.isAdmin() && (command == "addItem" || command == "deleteItem" || command == "changeQuantity" || command == "seeStatistics")) {
             return super.handle(command, info)
         }
 
-        else if (!info.authSession.isAdmin() && !(command == "addItem" || command == "deleteItem" || command == "changeQuantity")) {
+        else if (!info.authSession.isAdmin() && !(command == "addItem" || command == "deleteItem" || command == "changeQuantity"|| command == "seeStatistics")) {
             return super.handle(command, info)
         }
 

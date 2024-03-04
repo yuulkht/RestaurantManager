@@ -1,6 +1,12 @@
 package ru.hse.software.construction.model
 
+import com.fasterxml.jackson.annotation.JsonIgnore
+import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import ru.hse.software.construction.view.ConsoleStyle
+import java.io.IOException
+import java.io.ObjectInputStream
+import java.io.ObjectOutputStream
+import java.io.Serializable
 
 interface Observable {
     fun registerObserver(observer : OrderObserver)
@@ -14,35 +20,39 @@ enum class OrderStatus {
     READY,
 }
 
-
-
 class Order(
-    private val visitor: Visitor,
-    private var dishes: MutableMap<String, Dish> = mutableMapOf(),
+    @JsonSerialize
+    private var visitor: Visitor,
+    @JsonSerialize
+    private var dishes: MutableList<Dish> = mutableListOf(),
+    @JsonIgnore
     private var status: OrderStatus = OrderStatus.CREATED,
+    @JsonIgnore
     private var observer: OrderObserver? = null
-) : Observable{
+) : Observable, Serializable {
+
     fun setStatus(newStatus: OrderStatus) {
         status = newStatus
         notifyObserver()
     }
 
     fun addDish(dish: Dish) {
-        val dishName = dish.name
-        val existingDish = dishes[dishName]
+        val existingDish = dishes.find { it.name == dish.name }
         if (existingDish != null) {
             existingDish.quantity++
         } else {
-            dishes[dishName] = dish.copy(quantity = 1)
+            dishes.add(dish.copy(quantity = 1))
         }
     }
 
-    fun getDishes(): List<Dish> {
-        return dishes.values.toList()
+
+    fun getDishes(): MutableList<Dish> {
+        return dishes
     }
 
+    @JsonIgnore
     fun getProcessingTime(): Int {
-        return dishes.values.sumOf { dish ->
+        return dishes.sumOf { dish ->
             dish.preparationTime * dish.quantity
         }
     }
@@ -55,8 +65,9 @@ class Order(
         return status
     }
 
+    @JsonIgnore
     fun getTotalCost(): Int {
-        return dishes.values.sumOf { dish ->
+        return dishes.sumOf { dish ->
             dish.price * dish.quantity
         }
     }
@@ -86,7 +97,7 @@ class Order(
         builder.appendLine("${ConsoleStyle.CYAN}--------------------------------------------------${ConsoleStyle.RESET}")
         builder.appendLine("| Название       | Цена    | Количество | Подитог  |")
         builder.appendLine("${ConsoleStyle.CYAN}--------------------------------------------------${ConsoleStyle.RESET}")
-        dishes.values.forEach { dish ->
+        dishes.forEach { dish ->
             val name = dish.name.padEnd(15)
             val price = dish.price.toString().padEnd(8)
             val quantity = dish.quantity.toString().padEnd(11)
@@ -98,5 +109,4 @@ class Order(
         builder.appendLine("${ConsoleStyle.CYAN}--------------------------------------------------${ConsoleStyle.RESET}")
         return builder.toString()
     }
-
 }

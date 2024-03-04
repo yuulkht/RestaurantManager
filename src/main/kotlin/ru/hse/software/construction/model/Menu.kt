@@ -1,6 +1,5 @@
 package ru.hse.software.construction.model
 
-import com.fasterxml.jackson.annotation.JsonFormat
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.databind.annotation.JsonSerialize
 
@@ -8,9 +7,6 @@ data class Menu (
     @JsonSerialize
     var dishes : MutableList<Dish> = mutableListOf()
 ) {
-//    fun getDishes() : MutableList<Dish> {
-//        return dishes
-//    }
     fun addDish(dish : Dish) {
         dishes.add(dish)
     }
@@ -30,7 +26,7 @@ data class Menu (
 
     @JsonIgnore
     fun getAllBase() : String {
-        val dishes = dishes.filterIsInstance<Dish>()
+        val dishes = dishes.toList()
 
         val dishesString = dishes.joinToString(separator = "\n") { it.toString() }
 

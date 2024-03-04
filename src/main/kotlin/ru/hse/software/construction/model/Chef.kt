@@ -1,6 +1,5 @@
 package ru.hse.software.construction.model
 
-import ru.hse.software.construction.view.ConsoleOutputHandler
 import java.util.concurrent.BlockingQueue
 
 class Chef(

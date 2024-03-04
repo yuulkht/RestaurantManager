@@ -2,6 +2,7 @@ package ru.hse.software.construction.view
 
 import ru.hse.software.construction.ProgramInfo
 import ru.hse.software.construction.model.Order
+import ru.hse.software.construction.model.StatisticsManager
 
 
 interface OutputHandler {
@@ -16,6 +17,7 @@ interface OutputHandler {
     fun displayOrderStatus(order: Order)
 
     fun displayOrderCommands()
+    fun displayStatistics(statisticsManager: StatisticsManager)
 }
 
 class ConsoleOutputHandler : OutputHandler {
@@ -28,6 +30,7 @@ class ConsoleOutputHandler : OutputHandler {
         println("%-${maxWidth}s %s".format("addItem.", "Добавить новую позицию в меню ресторана"))
         println("%-${maxWidth}s %s".format("deleteItem.", "Удалить позицию из меню"))
         println("%-${maxWidth}s %s".format("changeQuantity.", "Изменить доступное количество у позиции в меню"))
+        println("%-${maxWidth}s %s".format("seeStatistics.", "Посмотреть статистику ресторана"))
         println("%-${maxWidth}s %s".format("logout.", "Выйти из системы"))
     }
 
@@ -87,4 +90,26 @@ class ConsoleOutputHandler : OutputHandler {
         println("3. Просмотреть заказ")
         println("4. Отменить заказ")
     }
+
+    override fun displayStatistics(statisticsManager: StatisticsManager) {
+        println("${ConsoleStyle.BLUE}${ConsoleStyle.BOLD}Статистика ресторана:${ConsoleStyle.RESET}")
+        println()
+
+        val averageRating = statisticsManager.getRestaurantRating()
+        println("${ConsoleStyle.YELLOW}Рейтинг ресторана: ${ConsoleStyle.RESET}${"%.2f".format(averageRating)}")
+        println("")
+
+        println("${ConsoleStyle.YELLOW}Средние оценки для блюд:${ConsoleStyle.RESET}")
+        statisticsManager.getAverageRatings().forEach { (dish, rating) ->
+            println("${dish.name}: ${"%.2f".format(rating)}")
+        }
+        println("")
+
+        println("${ConsoleStyle.YELLOW}Популярность блюд по количеству заказов:${ConsoleStyle.RESET}")
+        statisticsManager.getPopularDishesByCount().forEach { (dish, count) ->
+            println("${dish.name}: $count")
+        }
+        println("")
+    }
+
 }

@@ -1,7 +1,6 @@
 package ru.hse.software.construction.controller
 
 import ru.hse.software.construction.ProgramInfo
-import ru.hse.software.construction.reader.ConsoleUserReader
 import ru.hse.software.construction.view.ConsoleOutputHandler
 
 class LogoutCommand (

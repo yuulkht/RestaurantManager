@@ -2,14 +2,11 @@ package ru.hse.software.construction.controller
 
 import ru.hse.software.construction.ProgramInfo
 import ru.hse.software.construction.auth.UserStorage
-import ru.hse.software.construction.model.Administrator
-import ru.hse.software.construction.model.User
-import ru.hse.software.construction.model.Visitor
 import ru.hse.software.construction.reader.ConsoleUserReader
 import ru.hse.software.construction.view.ConsoleOutputHandler
 
 class LoginCommand(
-    val userStorage: UserStorage = UserStorage(),
+    private val userStorage: UserStorage = UserStorage(),
     private val reader: ConsoleUserReader = ConsoleUserReader(),
     private val outputHandler: ConsoleOutputHandler = ConsoleOutputHandler()
 ) : Command {

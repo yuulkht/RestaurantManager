@@ -7,8 +7,6 @@ interface UserReader {
     fun readInt() : Int?
     fun readString() : String?
     fun readAuthData() : String
-    fun readDuration() : Duration?
-    fun readDate() : LocalDateTime?
 }
 class ConsoleUserReader : UserReader{
     override fun readInt(): Int? {
@@ -21,12 +19,5 @@ class ConsoleUserReader : UserReader{
 
     override fun readAuthData(): String {
         return readln()
-    }
-
-    override fun readDuration(): Duration? {
-        return readlnOrNull()?.toLongOrNull()?.let { Duration.ofMinutes(it) }
-    }
-    override fun readDate(): LocalDateTime {
-        return LocalDateTime.parse(readln())
     }
 }

@@ -2,23 +2,12 @@ package ru.hse.software.construction.auth
 
 import org.mindrot.jbcrypt.BCrypt
 import ru.hse.software.construction.model.Administrator
-import ru.hse.software.construction.model.User
 import ru.hse.software.construction.model.Visitor
-import ru.hse.software.construction.repository.RestaurantAppRepository
 
 class UserStorage(
     val admins: MutableList<Administrator> = mutableListOf(),
     val visitors: MutableList<Visitor> = mutableListOf(),
 ) {
-    // for serializer
-//    fun getAdmins(): MutableList<Administrator> {
-//        return admins
-//    }
-
-//    fun getVisitors(): MutableList<Visitor> {
-//        return visitors
-//    }
-
     fun addAdmin(admin: Administrator) {
         admins.add(admin)
     }

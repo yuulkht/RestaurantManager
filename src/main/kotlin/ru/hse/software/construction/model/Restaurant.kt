@@ -1,7 +1,6 @@
 package ru.hse.software.construction.model
 
 
-import com.fasterxml.jackson.annotation.JsonFormat
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import java.io.*
@@ -20,11 +19,8 @@ class Restaurant : Serializable {
     @JsonSerialize
     private var menu: Menu = Menu()
 
-    fun processPayment(order: Order) {
-        order.getVisitor().payForOrder(BigDecimal.valueOf(order.getTotalCost().toLong()))
-        amountOfRevenue += order.getTotalCost()
-        orders.remove(order)
-    }
+    @JsonSerialize
+    private var statisticsManager: StatisticsManager = StatisticsManager()
 
     fun getMenu(): Menu {
         return menu
@@ -32,6 +28,14 @@ class Restaurant : Serializable {
 
     fun setMenu(menu: Menu) {
         this.menu = menu
+    }
+
+    fun getStatisticsManager(): StatisticsManager {
+        return statisticsManager
+    }
+
+    fun setStatisticsManager(statisticsManager: StatisticsManager) {
+        this.statisticsManager = statisticsManager
     }
 
     fun getAmountOfRevenue(): Int {
@@ -53,16 +57,16 @@ class Restaurant : Serializable {
     @Throws(IOException::class)
     private fun writeObject(out: ObjectOutputStream) {
         out.defaultWriteObject()
-        // Сериализуем только меню и выручку
         out.writeObject(menu)
+        out.writeObject(statisticsManager)
         out.writeInt(amountOfRevenue)
     }
 
     @Throws(IOException::class, ClassNotFoundException::class)
     private fun readObject(`in`: ObjectInputStream) {
         `in`.defaultReadObject()
-        // Восстанавливаем только меню и выручку
         menu = `in`.readObject() as Menu
+        statisticsManager = `in`.readObject() as StatisticsManager
         amountOfRevenue = `in`.readInt()
     }
 }

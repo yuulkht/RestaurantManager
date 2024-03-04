@@ -20,7 +20,7 @@ class RestaurantAppRepository(
         try {
             val jsonString = objectMapper.writeValueAsString(restaurant)
             File(pathToRestaurantFile).writeText(jsonString)
-        } catch (e: Exception) {
+        } catch (e: IOException) {
             val outputHandler = ConsoleOutputHandler()
             outputHandler.displayError("Проблема с файлом: $e")
         }
@@ -30,7 +30,7 @@ class RestaurantAppRepository(
         return try {
             val jsonString = File(pathToRestaurantFile).readText()
             objectMapper.readValue(jsonString)
-        } catch (e: Exception) {
+        } catch (e: IOException) {
             val outputHandler = ConsoleOutputHandler()
             outputHandler.displayError("Проблема с чтением файла: $e")
             Restaurant()
@@ -41,7 +41,7 @@ class RestaurantAppRepository(
         try {
             val jsonString = objectMapper.writeValueAsString(userStorage)
             File(pathToUserStorageFile).writeText(jsonString)
-        } catch (e: Exception) {
+        } catch (e: IOException) {
             val outputHandler = ConsoleOutputHandler()
             outputHandler.displayError("Проблема с файлом: $e")
         }
@@ -51,7 +51,7 @@ class RestaurantAppRepository(
         return try {
             val jsonString = File(pathToUserStorageFile).readText()
             return objectMapper.readValue<UserStorage>(jsonString, UserStorage::class.java)
-        } catch (e: Exception) {
+        } catch (e: IOException) {
             val outputHandler = ConsoleOutputHandler()
             outputHandler.displayError("Проблема с чтением файла: $e")
             return UserStorage()

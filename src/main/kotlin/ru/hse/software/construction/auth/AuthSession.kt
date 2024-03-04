@@ -1,6 +1,5 @@
 package ru.hse.software.construction.auth
 
-import org.mindrot.jbcrypt.BCrypt
 import ru.hse.software.construction.model.Administrator
 import ru.hse.software.construction.model.User
 
