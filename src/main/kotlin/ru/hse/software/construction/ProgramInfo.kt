@@ -11,29 +11,38 @@ import ru.hse.software.construction.controller.visitor.CreateOrderCommand
 import ru.hse.software.construction.controller.visitor.PayForOrderCommand
 import ru.hse.software.construction.model.Restaurant
 import ru.hse.software.construction.repository.RestaurantAppRepository
+import ru.hse.software.construction.repository.StoragePathValidator
+import ru.hse.software.construction.view.ConsoleOutputHandler
 
 class ProgramInfo(
     var restaurant: Restaurant = Restaurant(),
     var authSession: AuthSession = AuthSession(),
     var userStorage: UserStorage = UserStorage(),
     var commands: MutableMap<String, Command> = mutableMapOf(),
-    // TODO поменять файлы на изменяемые
+    var restaurantPath: String = "",
+    var usersPath: String = ""
 ) {
     fun isFilledInfo(): Boolean {
-        val loadedRestaurant = RestaurantAppRepository().loadRestaurant()
-        val loadedUserStorage = RestaurantAppRepository().loadUserStorage()
+        val storagePathValidator = StoragePathValidator()
+        val (restaurantPath, usersPath) = storagePathValidator.validatePaths()
+
+        if (restaurantPath == null || usersPath == null) {
+            ConsoleOutputHandler().displayError("Некорректные пути к файлам")
+            return false
+        }
+        this.restaurantPath = restaurantPath
+        this.usersPath = usersPath
+        val repository = RestaurantAppRepository(restaurantPath, usersPath)
+        val loadedRestaurant = repository.loadRestaurant()
+        val loadedUserStorage = repository.loadUserStorage()
 
         userStorage.admins.addAll(loadedUserStorage?.admins ?: mutableListOf())
         userStorage.visitors.addAll(loadedUserStorage?.visitors ?: mutableListOf())
 
+        restaurant.getOrderManager().stopAllChefs()
+        restaurant = loadedRestaurant
 
-        return if (loadedRestaurant != null) {
-            restaurant.getOrderManager().stopAllChefs()
-            restaurant = loadedRestaurant
-            true
-        } else {
-            false
-        }
+        return true
     }
 
 

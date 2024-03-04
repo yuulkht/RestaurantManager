@@ -1,23 +1,30 @@
 package ru.hse.software.construction.model
 
-import com.fasterxml.jackson.annotation.JsonFormat
-import ru.hse.software.construction.model.Dish
-import ru.hse.software.construction.model.Visitor
 import ru.hse.software.construction.view.ConsoleStyle
 
+interface Observable {
+    fun registerObserver(observer : OrderObserver)
+    fun notifyObserver()
+}
+
 enum class OrderStatus {
+    CREATED,
     ACCEPTED,
     PROCESSING,
     READY,
 }
 
-class Order (
+
+
+class Order(
     private val visitor: Visitor,
     private var dishes: MutableMap<String, Dish> = mutableMapOf(),
-    private var status: OrderStatus = OrderStatus.ACCEPTED
-) {
+    private var status: OrderStatus = OrderStatus.CREATED,
+    private var observer: OrderObserver? = null
+) : Observable{
     fun setStatus(newStatus: OrderStatus) {
         status = newStatus
+        notifyObserver()
     }
 
     fun addDish(dish: Dish) {
@@ -56,11 +63,20 @@ class Order (
 
     fun showOrderStatus(): String {
         val statusString = when (status) {
+            OrderStatus.CREATED -> "создан"
             OrderStatus.ACCEPTED -> "принят"
             OrderStatus.PROCESSING -> "готовится"
             OrderStatus.READY -> "готов"
         }
         return "${ConsoleStyle.PURPLE}Заказ для ${visitor.getLogin()}. Статус заказа: $statusString${ConsoleStyle.RESET}"
+    }
+
+    override fun registerObserver(observer: OrderObserver) {
+        this.observer = observer
+    }
+
+    override fun notifyObserver() {
+        observer?.updateOrderStatus(this)
     }
 
     override fun toString(): String {

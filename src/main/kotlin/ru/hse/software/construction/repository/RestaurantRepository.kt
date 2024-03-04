@@ -11,29 +11,29 @@ import java.io.File
 import java.io.IOException
 
 class RestaurantAppRepository(
-    private val objectMapper: ObjectMapper = ObjectMapper().registerKotlinModule().registerModule(JavaTimeModule()),
-    private var pathToRestaurantFile: String = "restaurant.json",
-    private var pathToUserStorageFile: String = "userStorage.json"
+    private var pathToRestaurantFile: String,
+    private var pathToUserStorageFile: String,
+    private val objectMapper: ObjectMapper = ObjectMapper().registerKotlinModule().registerModule(JavaTimeModule())
 ) {
 
     fun saveRestaurant(restaurant: Restaurant) {
         try {
             val jsonString = objectMapper.writeValueAsString(restaurant)
             File(pathToRestaurantFile).writeText(jsonString)
-        } catch (e: IOException) {
+        } catch (e: Exception) {
             val outputHandler = ConsoleOutputHandler()
             outputHandler.displayError("Проблема с файлом: $e")
         }
     }
 
-    fun loadRestaurant(): Restaurant? {
+    fun loadRestaurant(): Restaurant {
         return try {
             val jsonString = File(pathToRestaurantFile).readText()
             objectMapper.readValue(jsonString)
-        } catch (e: IOException) {
+        } catch (e: Exception) {
             val outputHandler = ConsoleOutputHandler()
             outputHandler.displayError("Проблема с чтением файла: $e")
-            null
+            Restaurant()
         }
     }
 
@@ -41,7 +41,7 @@ class RestaurantAppRepository(
         try {
             val jsonString = objectMapper.writeValueAsString(userStorage)
             File(pathToUserStorageFile).writeText(jsonString)
-        } catch (e: IOException) {
+        } catch (e: Exception) {
             val outputHandler = ConsoleOutputHandler()
             outputHandler.displayError("Проблема с файлом: $e")
         }
@@ -51,7 +51,7 @@ class RestaurantAppRepository(
         return try {
             val jsonString = File(pathToUserStorageFile).readText()
             return objectMapper.readValue<UserStorage>(jsonString, UserStorage::class.java)
-        } catch (e: IOException) {
+        } catch (e: Exception) {
             val outputHandler = ConsoleOutputHandler()
             outputHandler.displayError("Проблема с чтением файла: $e")
             return UserStorage()

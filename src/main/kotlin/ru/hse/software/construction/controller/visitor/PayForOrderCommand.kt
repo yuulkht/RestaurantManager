@@ -31,6 +31,7 @@ class PayForOrderCommand(
                     removeOrdersFromRestaurant(visitorOrders, programInfo)
                     programInfo.restaurant.setAmountOfRevenue(programInfo.restaurant.getAmountOfRevenue() + totalCost)
                     outputHandler.displayMessage("${ConsoleStyle.GREEN}Заказ(ы) успешно оплачены${ConsoleStyle.RESET}")
+
                 }
                 else {
                     outputHandler.displayMessage("На счете недостаточно средств для оплаты")

@@ -17,13 +17,10 @@ class Chef(
 
     private fun processOrder(order: Order) {
         order.setStatus(OrderStatus.PROCESSING)
-        val outputHandler = ConsoleOutputHandler()
-        outputHandler.displayOrderStatus(order)
 
         Thread.sleep(order.getProcessingTime().toLong() * 60 * 1000)
 
         order.setStatus(OrderStatus.READY)
-        outputHandler.displayOrderStatus(order)
     }
 
     fun stop() {

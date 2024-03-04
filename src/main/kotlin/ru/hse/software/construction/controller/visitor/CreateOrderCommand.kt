@@ -60,8 +60,9 @@ class CreateOrderCommand(
             return if (confirmation.equals("y", ignoreCase = true)) {
                 programInfo.restaurant.getOrders().add(order)
                 outputHandler.displayMessage("Ваш заказ принят и отправлен на обработку.")
+                val visitor = programInfo.authSession.getUser() as Visitor
+                order.registerObserver(visitor)
                 order.setStatus(OrderStatus.ACCEPTED)
-                outputHandler.displayOrderStatus(order)
                 programInfo.restaurant.getOrderManager().processOrder(order)
                 true
             } else {
